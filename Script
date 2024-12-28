@@ -11,6 +11,8 @@ KeyGuardLibrary.Set({
   falseData = falseData,
 })
 
+local key = "KEY_6706b1e0219b490e9644222e6da19367"
+
 local response = KeyGuardLibrary.validatePremiumKey(key)
 
 if response == trueData then
