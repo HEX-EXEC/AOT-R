@@ -17,8 +17,8 @@ local response = KeyGuardLibrary.validatePremiumKey(key)
 
 if response == trueData then
   	pcall(function()
-        	repeat
-        	wait()
+        repeat
+        wait()
         until
             game:IsLoaded() and game.Players.LocalPlayer.Character and workspace.Titans:GetChildren()
 	wait(3.5)
