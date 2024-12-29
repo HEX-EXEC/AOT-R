@@ -19,7 +19,7 @@ pcall(function()
     local TitansStorage = {}
     local TitansProcessed = 0
 
-    task.spawn(function()
+    local function collectTitans()
         for _, Titan in ipairs(Titans:GetChildren()) do
             if Titan:IsA("Model") and Titan:FindFirstChild("Humanoid") then
                 TitansStorage[Titan.Name] = Titan
@@ -30,14 +30,9 @@ pcall(function()
         -- Notify the player about the start of processing
         Notify("Hexhub", "Started " .. #Titans:GetChildren() .. " Titans", 5)
         print("Started processing " .. #Titans:GetChildren() .. " Titans")
+    end
 
-        while true do
-            Total = #Titans:GetChildren()
-            task.wait()
-        end
-    end)
-
-    task.spawn(function()
+    local function monitorInterface()
         local Interface = PlayerGui:FindFirstChild("Interface")
         if Interface then
             Interface.ChildAdded:Connect(function(Child)
@@ -52,9 +47,11 @@ pcall(function()
                 end
             end)
         end
+    end
 
+    local function handleNapes()
         for _, Titan in pairs(TitansStorage) do
-            local Nape = Titan.Hitboxes.Hit.Nape
+            local Nape = Titan:FindFirstChild("Hitboxes") and Titan.Hitboxes:FindFirstChild("Hit") and Titan.Hitboxes.Hit:FindFirstChild("Nape")
             if Nape then
                 Nape.ChildAdded:Connect(function(Child)
                     if Child.Name == "Blood" or Child.Name == "Hit" then
@@ -69,23 +66,27 @@ pcall(function()
                 end)
             end
         end
-    end)
+    end
 
-    task.spawn(function()
+    local function processTitans()
         for _, Titan in pairs(TitansStorage) do
-            local Nape = Titan.Hitboxes.Hit.Nape
-            TitansProcessed = TitansProcessed + 1
-            print("Processing Titan: " .. Titan.Name)
-            task.spawn(function()
-                while Nape and Nape.Parent and Nape.Parent.Parent do
-                    Nape.Position = HumanoidRootPart.Position
-                    task.wait()
-                end
-            end)
+            local Nape = Titan:FindFirstChild("Hitboxes") and Titan.Hitboxes:FindFirstChild("Hit") and Titan.Hitboxes.Hit:FindFirstChild("Nape")
+            if Nape then
+                TitansProcessed = TitansProcessed + 1
+                print("Processing Titan: " .. Titan.Name)
+                task.spawn(function()
+                    while Nape and Nape.Parent and Nape.Parent.Parent do
+                        Nape.Position = HumanoidRootPart.Position
+                        task.wait()
+                    end
+                end)
+            else
+                print("Nape not found for Titan: " .. Titan.Name)
+            end
         end
+    end
 
-        local index = 0
-
+    local function invokeServerFunctions()
         Remotes.GET:InvokeServer("Functions", "Retry", "Add")
         print("Invoked server function: Retry Add")
 
@@ -98,6 +99,8 @@ pcall(function()
         task.wait(3)
         Remotes.GET:InvokeServer("S_Skills", "Usage", "14")
         print("Used skill 14")
+
+        local index = 0
 
         while true do
             for _, v in pairs(Titans:GetChildren()) do
@@ -112,20 +115,30 @@ pcall(function()
 
             index = 0
         end
-    end)
-
-    -- Additional Optimization
-    local Lighting = game:GetService("Lighting")
-    for _, LightObj in pairs(Lighting:GetChildren()) do
-        LightObj:Destroy()
-        print("Destroyed lighting object: " .. LightObj.Name)
     end
-    wait(1)
-    local UselessShit = {"Climbable", "Debris", "Points", "Platforms", "Props", "Reloads", "Trees", "U_Buildings", "Tree_Colliders", "Fake"}
-    for _, Obj in ipairs(game:GetDescendants()) do
-        if Obj:IsA("ParticleEmitter") or table.find(UselessShit, Obj.Name) then
-            Obj:Destroy()
-            print("Destroyed unnecessary object: " .. Obj.Name)
+
+    local function optimizeGameObjects()
+        local Lighting = game:GetService("Lighting")
+        for _, LightObj in pairs(Lighting:GetChildren()) do
+            LightObj:Destroy()
+            print("Destroyed lighting object: " .. LightObj.Name)
+        end
+        task.wait(1)
+        local UselessShit = {"Climbable", "Debris", "Points", "Platforms", "Props", "Reloads", "Trees", "U_Buildings", "Tree_Colliders", "Fake"}
+        for _, Obj in ipairs(game:GetDescendants()) do
+            if Obj:IsA("ParticleEmitter") or table.find(UselessShit, Obj.Name) then
+                Obj:Destroy()
+                print("Destroyed unnecessary object: " .. Obj.Name)
+            end
         end
     end
+
+    task.spawn(function()
+        collectTitans()
+        task.spawn(monitorInterface)
+        task.spawn(handleNapes)
+        task.spawn(processTitans)
+        task.spawn(invokeServerFunctions)
+        task.spawn(optimizeGameObjects)
+    end)
 end)
