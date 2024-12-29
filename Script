@@ -1,6 +1,16 @@
 print("starting Auth")
 
-local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+-- Attempt to load the library from the URL
+local success, KeyGuardLibrary = pcall(function()
+    return loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+end)
+
+-- Check if the library was loaded successfully
+if not success then
+    print("Failed to load KeyGuardLibrary:", KeyGuardLibrary)
+    return
+end
+
 local trueData = "68d79b9a917a4416849199dde104656c"
 local falseData = "caba410b2ef64d3bb0557fba46e691b7"
 
@@ -14,7 +24,8 @@ KeyGuardLibrary.Set({
 local response = KeyGuardLibrary.validatePremiumKey(key)
 
 if response == trueData then
-  https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt
+  print("Key is valid")
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt"))()
 else
   print("Key is invalid")
 end
