@@ -16,7 +16,7 @@ local response = KeyGuardLibrary.validatePremiumKey(key)
 if response == trueData then
     pcall(function()
     	while not (game:IsLoaded() and game.Players.LocalPlayer.Character and workspace.Titans:GetChildren()) do
-    task.wait(3.5)
+    task.wait(4)
     end
 
     local Titans = workspace:WaitForChild("Titans")
