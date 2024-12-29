@@ -16,13 +16,11 @@ local key = "KEY_6706b1e0219b490e9644222e6da19367"
 local response = KeyGuardLibrary.validatePremiumKey(key)
 
 if response == trueData then
-  	pcall(function()
-    repeat
-    wait()
-    until
-        game:IsLoaded() and game.Players.LocalPlayer.Character and workspace.Titans:GetChildren()
-	wait(3.5)
-	
+    pcall(function()
+    	while not (game:IsLoaded() and game.Players.LocalPlayer.Character and workspace.Titans:GetChildren()) do
+    task.wait(3.5)
+    end
+
     local Titans = workspace:WaitForChild("Titans")
     local Remotes = game.ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Remotes")
 
@@ -41,7 +39,7 @@ if response == trueData then
     task.spawn(function()
         for _, Titan in ipairs(Titans:GetChildren()) do
             if Titan:IsA("Model") and Titan:FindFirstChild("Humanoid") then
-            	TitansStorage[Titan.Name] = Titan
+                TitansStorage[Titan.Name] = Titan
             end
         end
 
@@ -104,7 +102,7 @@ if response == trueData then
         end
 
         Remotes.GET:InvokeServer("S_Skills", "Usage", "23")
-        task.wait(3)
+        task.wait(2)
         Remotes.GET:InvokeServer("S_Skills", "Usage", "14")
 
         while true do
@@ -126,8 +124,8 @@ if response == trueData then
     for _, LightObj in pairs(Lighting:GetChildren()) do
         LightObj:Destroy()
     end
-    wait(1)
-    local UselessShit = {"Climbable", "Debris", "Points", "Platforms", "Props", "Reloads", "Trees", "U_Buildings", "Tree_Colliders", "Fake"}
+
+    local UselessShit = {"Climbable", "Debris", "Points", "Background", "Platforms", "Props", "Reloads", "Trees", "U_Buildings", "Tree_Colliders", "Fake"}
     for _, Obj in ipairs(game:GetDescendants()) do
         if Obj:IsA("ParticleEmitter") or table.find(UselessShit, Obj.Name) then
             Obj:Destroy()
