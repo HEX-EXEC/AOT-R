@@ -14,7 +14,7 @@ KeyGuardLibrary.Set({
 local response = KeyGuardLibrary.validatePremiumKey(key)
 
 if response == trueData then
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt"))()
+  https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt
 else
   print("Key is invalid")
 end
