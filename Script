@@ -5,8 +5,8 @@ if not _G.key then
     return
 end
 
-local trueData = "68d79b9a917a4416849199dde104656c"
-local falseData = "caba410b2ef64d3bb0557fba46e691b7"
+local trueData = "7358995073134f7ebad19fc6083f3795"
+local falseData = "9fb5a0ff819842b8aaf48273b2096c9f"
 
 local success, KeyGuardLibrary = pcall(function()
     return loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
