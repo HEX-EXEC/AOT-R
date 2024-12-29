@@ -1,5 +1,6 @@
 pcall(function()
     while not (game:IsLoaded() and game.Players.LocalPlayer.Character and workspace.Titans:GetChildren()) do
+        repeat
         task.wait(5)
     end
 
