@@ -26,9 +26,6 @@ KeyGuardLibrary.Set({
 
 print("KeyGuardLibrary configuration set")
 
--- Define the key to validate
-local key = "your-key-here"  -- Replace with the actual key you want to validate
-
 -- Validate the key
 local response = KeyGuardLibrary.validatePremiumKey(key)
 
