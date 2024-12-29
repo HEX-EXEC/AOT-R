@@ -11,6 +11,7 @@ end
 local trueData = "68d79b9a917a4416849199dde104656c"
 local falseData = "caba410b2ef64d3bb0557fba46e691b7"
 
+-- Attempt to load the KeyGuardLibrary
 local success, KeyGuardLibrary = pcall(function()
     return loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 end)
@@ -20,6 +21,9 @@ if not success then
     return
 end
 
+print("KeyGuardLibrary loaded successfully")
+
+-- Set the configuration for KeyGuardLibrary
 KeyGuardLibrary.Set({
   publicToken = "3251c6ef4853497991a2256e71608f44",
   privateToken = "4e4932b5f7e646c9a43d750d954ac3ab",
@@ -27,10 +31,16 @@ KeyGuardLibrary.Set({
   falseData = falseData,
 })
 
+print("KeyGuardLibrary configuration set")
+
+-- Validate the key
 local response = KeyGuardLibrary.validatePremiumKey(_G.key)
+
+print("Response from validatePremiumKey:", response)
 
 if response == trueData then
   print("Key is valid")
+  -- Attempt to load and execute the Yesnt script
   local yesntSuccess, yesntResult = pcall(function()
       return loadstring(game:HttpGet("https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt"))()
   end)
