@@ -1,22 +1,25 @@
+-- Main script to be loaded
+-- Ensure this script is saved at the URL: https://raw.githubusercontent.com/HEX-EXEC/AOT-R/refs/heads/main/Script
+
 print("Starting Auth")
 
--- Attempt to load the library from the URL
+if not _G.key then
+    print("Key not provided")
+    return
+end
+
+local trueData = "68d79b9a917a4416849199dde104656c"
+local falseData = "caba410b2ef64d3bb0557fba46e691b7"
+
 local success, KeyGuardLibrary = pcall(function()
     return loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
 end)
 
--- Check if the library was loaded successfully
 if not success then
     print("Failed to load KeyGuardLibrary:", KeyGuardLibrary)
     return
 end
 
-print("KeyGuardLibrary loaded successfully")
-
-local trueData = "68d79b9a917a4416849199dde104656c"
-local falseData = "caba410b2ef64d3bb0557fba46e691b7"
-
--- Set the configuration for KeyGuardLibrary
 KeyGuardLibrary.Set({
   publicToken = "3251c6ef4853497991a2256e71608f44",
   privateToken = "4e4932b5f7e646c9a43d750d954ac3ab",
@@ -24,15 +27,10 @@ KeyGuardLibrary.Set({
   falseData = falseData,
 })
 
-print("KeyGuardLibrary configuration set")
+local response = KeyGuardLibrary.validatePremiumKey(_G.key)
 
--- Validate the key
-local response = KeyGuardLibrary.validatePremiumKey(key)
-
--- Check the validation response
 if response == trueData then
   print("Key is valid")
-  -- Attempt to load and execute the Yesnt script
   local yesntSuccess, yesntResult = pcall(function()
       return loadstring(game:HttpGet("https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt"))()
   end)
