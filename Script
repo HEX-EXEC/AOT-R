@@ -34,7 +34,6 @@ print("Response from validatePremiumKey:", response)
 
 if response == trueData then
   print("Key is valid")
-  -- Attempt to load and execute the Yesnt script
   local yesntSuccess, yesntResult = pcall(function()
       return loadstring(game:HttpGet("https://raw.githubusercontent.com/HEX-EXEC/Yesnt/refs/heads/main/Yesnt"))()
   end)
