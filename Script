@@ -1,1 +1,20 @@
-pcall(function() repeat wait() until game:IsLoaded() local T=workspace:WaitForChild("Titans",5) if not T then return end wait(3.5) local HRP=game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") local R=game.ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Remotes") for _,v in ipairs(T:GetChildren()) do local n=v:FindFirstChild("Hitboxes") and v.Hitboxes:FindFirstChild("Hit") and v.Hitboxes.Hit:FindFirstChild("Nape") if n then n.ChildAdded:Connect(function(c) if c.Name=="Blood" or c.Name=="Hit" then task.spawn(function() while c.Parent do c:Destroy() wait() end end) end end) task.spawn(function() while n do n.Position=HRP.Position wait() end end) end end R.GET:InvokeServer("S_Skills","Usage","23") wait(3) R.GET:InvokeServer("S_Skills","Usage","14") wait(0.5) R.GET:InvokeServer("Functions","Retry","Add") end)
+print("starting Auth")
+
+local KeyGuardLibrary = loadstring(game:HttpGet("https://cdn.keyguardian.org/library/v1.0.0.lua"))()
+local trueData = "68d79b9a917a4416849199dde104656c"
+local falseData = "caba410b2ef64d3bb0557fba46e691b7"
+
+KeyGuardLibrary.Set({
+  publicToken = "3251c6ef4853497991a2256e71608f44",
+  privateToken = "4e4932b5f7e646c9a43d750d954ac3ab",
+  trueData = trueData,
+  falseData = falseData,
+})
+
+local response = KeyGuardLibrary.validatePremiumKey(key)
+
+if response == trueData then
+  pcall(function() repeat wait() until game:IsLoaded() local T=workspace:WaitForChild("Titans",5) if not T then return end wait(3.5) local HRP=game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") local R=game.ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Remotes") for _,v in ipairs(T:GetChildren()) do local n=v:FindFirstChild("Hitboxes") and v.Hitboxes:FindFirstChild("Hit") and v.Hitboxes.Hit:FindFirstChild("Nape") if n then n.ChildAdded:Connect(function(c) if c.Name=="Blood" or c.Name=="Hit" then task.spawn(function() while c.Parent do c:Destroy() wait() end end) end end) task.spawn(function() while n do n.Position=HRP.Position wait() end end) end end R.GET:InvokeServer("S_Skills","Usage","23") wait(3) R.GET:InvokeServer("S_Skills","Usage","14") wait(0.5) R.GET:InvokeServer("Functions","Retry","Add") end)
+else
+  print("Key is invalid")
+end
