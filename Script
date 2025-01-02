@@ -128,8 +128,8 @@ task.spawn(function()
                 if titan:IsA("Model") then
                     for _, part in ipairs(titan:GetDescendants()) do
                         if part:IsA("BasePart") and part.Name == "Nape" then
-                            part.Position = HumanoidRootPart.Position
-                            part.CFrame = HumanoidRootPart.CFrame
+                            local offset = part.Position - titan.PrimaryPart.Position
+                            part.CFrame = HumanoidRootPart.CFrame:ToWorldSpace(CFrame.new(offset))
                             part.CanCollide = false
                         end
                     end
