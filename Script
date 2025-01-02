@@ -65,18 +65,18 @@ local function mainLoop()
     print("Free farming stopped.")
 end
 
-G_Retry = true -- Add this toggle variable for autoRetry
-G_Delay = 0.5 -- Add this variable for retry timing
-
 -- Auto Retry Function
 local function autoRetry()
-    while task.wait(G_Delay) do -- Use the retry timing variable
-        if not G_Retry then return end -- Check the toggle variable
-        local closestNape, closestHumanoid = findClosestNape()
+    while true do -- Main loop for autoRetry
+        if G_Retry then -- Only run when G_Retry is true
+            local closestNape, closestHumanoid = findClosestNape()
 
-        if not closestNape then
-            Remotes.GET:InvokeServer("Functions", "Retry", "Add")
+            if not closestNape then
+                Remotes.GET:InvokeServer("Functions", "Retry", "Add")
+            end
         end
+
+        task.wait(G_Delay) -- Use the retry timing variable
     end
 end
 
@@ -93,9 +93,6 @@ local function waitForNapes()
         task.wait(0.1)
     end
 end
-
-G_Reload = true -- Add this toggle variable for autoBlade
-G_Escape = true -- Add this toggle variable for autoEscape
 
 -- AutoBlade function
 local function autoBlade()
@@ -144,5 +141,4 @@ runAutoFarm()
 task.spawn(autoBlade) -- Start AutoBlade in parallel
 task.spawn(autoEscape) -- Start AutoEscape in parallel
 
-print("Auto farm, blade, and escape functions are running.")
-
+print("Auto farm, blade, retry, and escape functions are running.")
