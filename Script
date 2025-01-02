@@ -67,8 +67,11 @@ end
 
 -- Auto Retry Function
 local function autoRetry()
+    local lastRetryTime = os.time() -- Track the last retry time
+
     while true do -- Main loop for autoRetry
         if G_Retry then -- Only run when G_Retry is true
+            local currentTime = os.time()
             local closestNape, closestHumanoid = findClosestNape()
 
             if not closestNape then
@@ -84,8 +87,18 @@ local function autoRetry()
                 -- If nape still not found after delay, send retry request
                 if not closestNape then
                     Remotes.GET:InvokeServer("Functions", "Retry", "Add")
+                    lastRetryTime = os.time()
                 end
             end
+        elseif G_ForceRetry then -- Only run force retry when G_Retry is false
+            local currentTime = os.time()
+
+            -- Wait for G_Delay seconds
+            task.wait(G_Delay)
+
+            -- Force retry
+            Remotes.GET:InvokeServer("Functions", "Retry", "Add")
+            lastRetryTime = os.time()
         end
 
         task.wait(0.1) -- Small wait to prevent tight loop
