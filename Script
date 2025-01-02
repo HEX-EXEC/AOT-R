@@ -121,6 +121,13 @@ task.spawn(function()
     local Titans = Workspace:WaitForChild("Titans")
     local Remotes = ReplicatedStorage:WaitForChild("Assets"):WaitForChild("Remotes")
 
+    -- Invisible anchored part to attach the Nape to
+    local anchorPart = Instance.new("Part")
+    anchorPart.Anchored = true
+    anchorPart.CanCollide = false
+    anchorPart.Transparency = 1
+    anchorPart.Parent = Workspace
+
     -- Position Nape to HumanoidRootPart
     task.spawn(function()
         while true do
@@ -128,8 +135,8 @@ task.spawn(function()
                 if titan:IsA("Model") then
                     for _, part in ipairs(titan:GetDescendants()) do
                         if part:IsA("BasePart") and part.Name == "Nape" then
-                            local offset = part.Position - titan.PrimaryPart.Position
-                            part.CFrame = HumanoidRootPart.CFrame:ToWorldSpace(CFrame.new(offset))
+                            anchorPart.Position = HumanoidRootPart.Position
+                            part.CFrame = anchorPart.CFrame
                             part.CanCollide = false
                         end
                     end
